@@ -6,4 +6,4 @@ export const PLATFORM_NAME = 'EnvironmentalMonitoring';
 /**
  * This must match the name of your plugin as defined the package.json
  */
-export const PLUGIN_NAME = 'carbon-dioxide-monitor';
+export const PLUGIN_NAME = 'homebridge-carbondioxide-monitor';

@@ -1,5 +1,5 @@
 {
-  "name": "carbon-dioxide-monitor",
+  "name": "homebridge-carbondioxide-monitor",
   "displayName": "Carbon Dioxide Monitor",
   "type": "module",
   "version": "1.0.0",
@@ -7,13 +7,13 @@
   "description": "A short description about what your plugin does.",
   "author": "Preston Kemp",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/pkkemp/co2-monitor-homebridge#readme",
+  "homepage": "https://github.com/pkkemp/homebridge-carbondioxide-monitor#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pkkemp/co2-monitor-homebridge.git"
+    "url": "https://github.com/pkkemp/homebridge-carbondioxide-monitor.git"
   },
   "bugs": {
-    "url": "https://github.com/pkkemp/co2-monitor-homebridge/issues"
+    "url": "https://github.com/pkkemp/homebridge-carbondioxide-monitor/issues"
   },
   "keywords": [
     "homebridge-plugin"
