@@ -7,7 +7,8 @@ import type { ExampleHomebridgePlatform } from './platform.js';
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class ExamplePlatformAccessory {
+
+export class CarbonDioxideMonitorAccessory {
   private service: Service;
 
   /**
@@ -20,8 +21,8 @@ export class ExamplePlatformAccessory {
   };
 
   constructor(
-    private readonly platform: ExampleHomebridgePlatform,
-    private readonly accessory: PlatformAccessory,
+      private readonly platform: ExampleHomebridgePlatform,
+      private readonly accessory: PlatformAccessory,
   ) {
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -31,7 +32,7 @@ export class ExamplePlatformAccessory {
 
     // get the LightBulb service if it exists, otherwise create a new LightBulb service
     // you can create multiple services for each accessory
-    this.service = this.accessory.getService(this.platform.Service.Lightbulb) || this.accessory.addService(this.platform.Service.Lightbulb);
+    this.service = this.accessory.getService(this.platform.Service.CarbonDioxideSensor) || this.accessory.addService(this.platform.Service.CarbonDioxideSensor);
 
     // set the service name, this is what is displayed as the default name on the Home app
     // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
@@ -40,14 +41,12 @@ export class ExamplePlatformAccessory {
     // each service must implement at-minimum the "required characteristics" for the given service type
     // see https://developers.homebridge.io/#/service/Lightbulb
 
-    // register handlers for the On/Off Characteristic
-    this.service.getCharacteristic(this.platform.Characteristic.On)
-      .onSet(this.setOn.bind(this)) // SET - bind to the `setOn` method below
-      .onGet(this.getOn.bind(this)); // GET - bind to the `getOn` method below
+    // register handlers for the Carbon Dioxide Level Characteristic
+    this.service.getCharacteristic(this.platform.Characteristic.CarbonDioxideLevel)
+      .onGet(this.getCO2.bind(this)); // GET - bind to the `getCO2` method below
 
-    // register handlers for the Brightness Characteristic
-    this.service.getCharacteristic(this.platform.Characteristic.Brightness)
-      .onSet(this.setBrightness.bind(this)); // SET - bind to the 'setBrightness` method below
+    this.service.getCharacteristic(this.platform.Characteristic.CarbonDioxideDetected)
+      .onGet(this.getCO2Detected.bind(this));
 
     /**
      * Creating multiple services of the same type.
@@ -60,12 +59,12 @@ export class ExamplePlatformAccessory {
      * can use the same subtype id.)
      */
 
-    // Example: add two "motion sensor" services to the accessory
-    const motionSensorOneService = this.accessory.getService('Motion Sensor One Name')
-      || this.accessory.addService(this.platform.Service.MotionSensor, 'Motion Sensor One Name', 'YourUniqueIdentifier-1');
-
-    const motionSensorTwoService = this.accessory.getService('Motion Sensor Two Name')
-      || this.accessory.addService(this.platform.Service.MotionSensor, 'Motion Sensor Two Name', 'YourUniqueIdentifier-2');
+    //     // Example: add two "motion sensor" services to the accessory
+    // const motionSensorOneService = this.accessory.getService('Motion Sensor One Name')
+    //         || this.accessory.addService(this.platform.Service.MotionSensor, 'Motion Sensor One Name', 'YourUniqueIdentifier-1');
+    //
+    // const motionSensorTwoService = this.accessory.getService('Motion Sensor Two Name')
+    //     || this.accessory.addService(this.platform.Service.MotionSensor, 'Motion Sensor Two Name', 'YourUniqueIdentifier-2');
 
     /**
      * Updating characteristics values asynchronously.
@@ -76,29 +75,18 @@ export class ExamplePlatformAccessory {
      * the `updateCharacteristic` method.
      *
      */
-    let motionDetected = false;
-    setInterval(() => {
-      // EXAMPLE - inverse the trigger
-      motionDetected = !motionDetected;
-
-      // push the new value to HomeKit
-      motionSensorOneService.updateCharacteristic(this.platform.Characteristic.MotionDetected, motionDetected);
-      motionSensorTwoService.updateCharacteristic(this.platform.Characteristic.MotionDetected, !motionDetected);
-
-      this.platform.log.debug('Triggering motionSensorOneService:', motionDetected);
-      this.platform.log.debug('Triggering motionSensorTwoService:', !motionDetected);
-    }, 10000);
-  }
-
-  /**
-   * Handle "SET" requests from HomeKit
-   * These are sent when the user changes the state of an accessory, for example, turning on a Light bulb.
-   */
-  async setOn(value: CharacteristicValue) {
-    // implement your own code to turn your device on/off
-    this.exampleStates.On = value as boolean;
-
-    this.platform.log.debug('Set Characteristic On ->', value);
+    // let motionDetected = false;
+    // setInterval(() => {
+    //   // EXAMPLE - inverse the trigger
+    //   motionDetected = !motionDetected;
+    //
+    //   // push the new value to HomeKit
+    //   motionSensorOneService.updateCharacteristic(this.platform.Characteristic.MotionDetected, motionDetected);
+    //   motionSensorTwoService.updateCharacteristic(this.platform.Characteristic.MotionDetected, !motionDetected);
+    //
+    //   this.platform.log.debug('Triggering motionSensorOneService:', motionDetected);
+    //   this.platform.log.debug('Triggering motionSensorTwoService:', !motionDetected);
+    // }, 10000);
   }
 
   /**
@@ -114,26 +102,28 @@ export class ExamplePlatformAccessory {
    * @example
    * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
    */
-  async getOn(): Promise<CharacteristicValue> {
+  async getCO2(): Promise<CharacteristicValue> {
     // implement your own code to check if the device is on
-    const isOn = this.exampleStates.On;
+    const co2 = 300;
 
-    this.platform.log.debug('Get Characteristic On ->', isOn);
+    this.platform.log.debug('Get Characteristic CO2 ->', co2);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
 
-    return isOn;
+    return co2;
   }
 
-  /**
-   * Handle "SET" requests from HomeKit
-   * These are sent when the user changes the state of an accessory, for example, changing the Brightness
-   */
-  async setBrightness(value: CharacteristicValue) {
-    // implement your own code to set the brightness
-    this.exampleStates.Brightness = value as number;
+  async getCO2Detected(): Promise<CharacteristicValue> {
+    // implement your own code to check if the device is on
+    const co2 = 300;
 
-    this.platform.log.debug('Set Characteristic Brightness -> ', value);
+    this.platform.log.debug('Characteristic CO2 Detected ->', co2);
+
+    // if you need to return an error to show the device as "Not Responding" in the Home app:
+    // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
+
+    return false;
   }
+
 }

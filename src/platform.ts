@@ -1,6 +1,6 @@
 import type { API, Characteristic, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
 
-import { ExamplePlatformAccessory } from './platformAccessory.js';
+import {CarbonDioxideMonitorAccessory, ExamplePlatformAccessory} from './platformAccessory.js';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
 
 /**
@@ -58,12 +58,8 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
     // or a user-defined array in the platform config.
     const exampleDevices = [
       {
-        exampleUniqueId: 'ABCD',
-        exampleDisplayName: 'Bedroom',
-      },
-      {
-        exampleUniqueId: 'EFGH',
-        exampleDisplayName: 'Kitchen',
+        exampleUniqueId: 'QIUNJ',
+        exampleDisplayName: 'CO2Sensor',
       },
     ];
 
@@ -88,7 +84,7 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the restored accessory
         // this is imported from `platformAccessory.ts`
-        new ExamplePlatformAccessory(this, existingAccessory);
+        new CarbonDioxideMonitorAccessory(this, existingAccessory);
 
         // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, e.g.:
         // remove platform accessories when no longer present
