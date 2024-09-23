@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "EnvironmentalMonitoring",
   "pluginType": "platform",
   "singular": true,
   "schema": {
