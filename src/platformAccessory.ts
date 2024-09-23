@@ -1,6 +1,6 @@
 import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
 
-import type { ExampleHomebridgePlatform } from './platform.js';
+import type { EnvironmentalMonitoringPlatform } from './platform.js';
 
 /**
  * Platform Accessory
@@ -21,7 +21,7 @@ export class CarbonDioxideMonitorAccessory {
   };
 
   constructor(
-      private readonly platform: ExampleHomebridgePlatform,
+      private readonly platform: EnvironmentalMonitoringPlatform,
       private readonly accessory: PlatformAccessory,
   ) {
     // set accessory information
