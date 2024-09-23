@@ -10,6 +10,12 @@
         "type": "string",
         "required": true,
         "default": "Example Dynamic Platform"
+      },
+      "endpoint": {
+        "title": "Sesnor HTTP Endpoint",
+        "type": "string",
+        "required": true,
+        "default": "https://sensors.example.com/co2/"
       }
     }
   }
