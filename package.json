@@ -3,7 +3,6 @@
   "displayName": "Carbon Dioxide Monitor",
   "type": "module",
   "version": "1.0.1",
-  "private": true,
   "description": "A short description about what your plugin does.",
   "author": "Preston Kemp",
   "license": "Apache-2.0",
