@@ -1,5 +1,5 @@
 import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
-
+import axios from 'axios';
 import type { EnvironmentalMonitoringPlatform } from './platform.js';
 
 /**
@@ -104,7 +104,18 @@ export class CarbonDioxideMonitorAccessory {
    */
   async getCO2(): Promise<CharacteristicValue> {
     // implement your own code to check if the device is on
-    const co2 = 300;
+    // const co2 = 300;
+    const url = this.platform.config.endpoint;
+    var co2 = 0;
+    try {
+      const response = await axios.get(url);
+      const jsonData = response.data;
+      co2 = jsonData.co2;
+
+    } catch (error) {
+      this.platform.log.debug('Error making HTTP request: ->', co2);
+      // this.log.error('Error making HTTP request:', error);
+    }
 
     this.platform.log.debug('Get Characteristic CO2 ->', co2);
 
