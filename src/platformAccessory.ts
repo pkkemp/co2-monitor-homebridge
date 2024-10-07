@@ -116,9 +116,9 @@ export class CarbonDioxideMonitorAccessory {
 
   async getCO2Detected(): Promise<CharacteristicValue> {
     // implement your own code to check if the device is on
-    const co2 = 300;
+    const co2Detect = false;
 
-    this.platform.log.debug('Characteristic CO2 Detected ->', co2);
+    this.platform.log.debug('Characteristic CO2 Detected ->', co2Detect);
 
     // if you need to return an error to show the device as "Not Responding" in the Home app:
     // throw new this.platform.api.hap.HapStatusError(this.platform.api.hap.HAPStatus.SERVICE_COMMUNICATION_FAILURE);
