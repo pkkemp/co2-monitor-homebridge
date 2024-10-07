@@ -106,11 +106,10 @@ export class CarbonDioxideMonitorAccessory {
     // implement your own code to check if the device is on
     // const co2 = 300;
     const url = this.platform.config.endpoint;
-    var co2 = 0;
     try {
       const response = await axios.get(url);
       const jsonData = response.data;
-      co2 = jsonData.co2;
+      var co2 = jsonData.co2;
 
     } catch (error) {
       this.platform.log.debug('Error making HTTP request: ->', co2);
