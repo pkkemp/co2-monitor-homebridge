@@ -4,6 +4,11 @@ import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge
 
 import type { EnvironmentalMonitoringPlatform } from './platform.js';
 
+interface SensorData {
+  co2: number;
+  co2Detected: boolean;
+}
+
 /**
  * Platform Accessory
  * An instance of this class is created for each accessory your platform registers
@@ -49,6 +54,9 @@ export class CarbonDioxideMonitorAccessory {
 
     this.service.getCharacteristic(this.platform.Characteristic.CarbonDioxideDetected)
       .onGet(this.getCO2Detected.bind(this));
+
+
+
 
     /**
      * Creating multiple services of the same type.
@@ -110,10 +118,17 @@ export class CarbonDioxideMonitorAccessory {
     const url = this.platform.config.endpoint;
     let co2 = 0;
     try {
-      const response = await axios.get(url);
-      const jsonData = response.data;
-      co2 = jsonData.co2;
+      const response = await axios.get<SensorData>(url); // Use the generic type here
+      const jsonData: SensorData = response.data; // Specify the type here
 
+      // Process the JSON data directly in this function
+      co2 = jsonData.co2;
+      this.platform.log.info(`Processing CO2 Level: ${co2}`);
+
+      // Log the returned CO2 value
+      this.platform.log.info(`CO2 Value Returned: ${co2}`);
+
+      return co2; // Return the CO2 value if needed
     } catch (error) {
       this.platform.log.debug('Error making HTTP request: ->', co2);
       // this.log.error('Error making HTTP request:', error);
