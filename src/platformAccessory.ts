@@ -1,5 +1,7 @@
-import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
 import axios from 'axios';
+
+import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
+
 import type { EnvironmentalMonitoringPlatform } from './platform.js';
 
 /**
