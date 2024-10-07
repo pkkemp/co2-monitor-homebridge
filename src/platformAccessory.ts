@@ -153,10 +153,10 @@ export class CarbonDioxideMonitorAccessory {
 
       // Process the JSON data directly in this function
       co2Detected = jsonData.co2Detected;
-      this.platform.log.info(`Processing CO2 Level: ${co2Detected}`);
+      this.platform.log.info(`Processing CO2 Detected: ${co2Detected}`);
 
       // Log the returned CO2 value
-      this.platform.log.info(`CO2 Value Returned: ${co2Detected}`);
+      this.platform.log.info(`CO2 Detected Returned: ${co2Detected}`);
 
       return co2Detected; // Return the CO2 value if needed
     } catch (error) {
