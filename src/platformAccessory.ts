@@ -69,10 +69,14 @@ export class CarbonDioxideMonitorAccessory {
      * can use the same subtype id.)
      */
 
-    //     // Example: add two "motion sensor" services to the accessory
+    // Example: add two "motion sensor" services to the accessory
+
+    const carbonDioxideSensorOneService = this.accessory.getService(this.platform.Service.CarbonDioxideSensor);
+
+
     // const motionSensorOneService = this.accessory.getService('Motion Sensor One Name')
     //         || this.accessory.addService(this.platform.Service.MotionSensor, 'Motion Sensor One Name', 'YourUniqueIdentifier-1');
-    //
+
     // const motionSensorTwoService = this.accessory.getService('Motion Sensor Two Name')
     //     || this.accessory.addService(this.platform.Service.MotionSensor, 'Motion Sensor Two Name', 'YourUniqueIdentifier-2');
 
@@ -85,11 +89,40 @@ export class CarbonDioxideMonitorAccessory {
      * the `updateCharacteristic` method.
      *
      */
-    // let motionDetected = false;
+    let co2Detected = false;
+    setInterval(() => {
+      // EXAMPLE - inverse the trigger
+      co2Detected = !co2Detected;
+      // push the new value to HomeKit
+      const url = this.platform.config.endpoint;
+      let co2 = 0;
+      try {
+        const response = axios.get<SensorData>(url); // Use the generic type here
+        const jsonData: SensorData = response.data; // Specify the type here
+
+        // Process the JSON data directly in this function
+        co2 = jsonData.co2;
+        co2Detected = jsonData.co2Detected;
+        this.platform.log.info(`Processing CO2 Level: ${co2}`);
+
+        // Log the returned CO2 value
+        this.platform.log.info(`CO2 Value Returned: ${co2}`);
+
+        return co2; // Return the CO2 value if needed
+      } catch (error) {
+        this.platform.log.debug('Error making HTTP request: ->', co2);
+        // this.log.error('Error making HTTP request:', error);
+      }
+
+      this.platform.log.debug('Fetching at Interval Get Characteristic CO2 ->', co2);
+      carbonDioxideSensorOneService.updateCharacteristic(this.platform.Characteristic.CarbonDioxideDetected, co2Detected);
+      carbonDioxideSensorOneService.updateCharacteristic(this.platform.Characteristic.CarbonDioxideLevel, co2);
+
+    }, 10000);
+    // let co2Detected = false;
     // setInterval(() => {
     //   // EXAMPLE - inverse the trigger
     //   motionDetected = !motionDetected;
-    //
     //   // push the new value to HomeKit
     //   motionSensorOneService.updateCharacteristic(this.platform.Characteristic.MotionDetected, motionDetected);
     //   motionSensorTwoService.updateCharacteristic(this.platform.Characteristic.MotionDetected, !motionDetected);
