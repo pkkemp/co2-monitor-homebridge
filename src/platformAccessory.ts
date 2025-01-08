@@ -185,7 +185,8 @@ export class CarbonDioxideMonitorAccessory {
       const jsonData: SensorData = response.data; // Specify the type here
 
       // Process the JSON data directly in this function
-      co2Detected = jsonData.co2Detected;
+      // co2Detected = jsonData.co2Detected;
+      co2Detected = jsonData.co2 >= 700
       this.platform.log.info(`Processing CO2 Detected: ${co2Detected}`);
 
       // Log the returned CO2 value
